@@ -1,6 +1,10 @@
 const ex = require("express");
+const authController = require('../controllers/authController')
 
 const router = ex.Router();
+
+
+router.post('/signup', authController.signup)
 
 router
 .route("/")
