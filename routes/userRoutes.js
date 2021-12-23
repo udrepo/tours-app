@@ -1,16 +1,17 @@
 const ex = require("express");
 const authController = require('../controllers/authController')
+const userController = require('../controllers/userController')
+
 
 const router = ex.Router();
 
 
-router.post('/signup', authController.signup)
+router.post('/signup', authController.signup);
+router.post('/login', authController.login);
 
 router
 .route("/")
-.get((req, res) => {res.status(500).json({
-  status: "no method"
-})})
+.get(userController.getAllUsers)
 .post((req, res) => {res.status(500).json({
   status: "no method"
 })});
