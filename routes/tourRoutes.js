@@ -1,6 +1,6 @@
 const ex = require("express");
 const tc = require('../controllers/tourController')
-
+const authController = require('../controllers/authController')
 
 const router = ex.Router();
 
@@ -10,14 +10,16 @@ router.route('/monthly-plan/:year').get(tc.getMonthlyPlan);
 
 router
   .route("/")
-  .get(tc.getAllTours)
+  .get(authController.protect, tc.getAllTours)
   .post(tc.postTour);
 
 router
   .route("/:id")
   .get(tc.getTourById)
   .patch(tc.patchTour)
-  .delete(tc.deleteTour);
+  .delete(authController.protect, 
+    authController.restrictTo('admin', 'lead-guide'), 
+    tc.deleteTour);
  
 
   module.exports = router
