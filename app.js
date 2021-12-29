@@ -11,6 +11,7 @@ const app = ex();
 
 const tourRouter = require("./routes/tourRoutes");
 const userRouter = require("./routes/userRoutes");
+const reviewRouter = require("./routes/reviewRoutes")
 
 //middlewares
 //set security http
@@ -48,6 +49,8 @@ const limiter = rateLimit({
 app.use("/api", limiter);
 app.use("/api/v1/tours", tourRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/reviews", reviewRouter);
+
 
 app.all("*", (req, res, next) =>
   next(new AppError("API address not found", 404))

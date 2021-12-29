@@ -1,8 +1,12 @@
 const ex = require("express");
 const tc = require('../controllers/tourController')
 const authController = require('../controllers/authController')
-
+const reviewRouter = require('../routes/reviewRoutes')
 const router = ex.Router();
+
+router.use('/:tourId/reviews', reviewRouter);
+
+
 
 router.route('/top-5-cheap').get(tc.aliasTopTours, tc.getAllTours);
 router.route('/stats').get(tc.getTourStats);
@@ -20,6 +24,5 @@ router
   .delete(authController.protect, 
     authController.restrictTo('admin', 'lead-guide'), 
     tc.deleteTour);
- 
 
   module.exports = router
