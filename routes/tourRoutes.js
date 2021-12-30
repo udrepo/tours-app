@@ -1,28 +1,38 @@
 const ex = require("express");
-const tc = require('../controllers/tourController')
-const authController = require('../controllers/authController')
-const reviewRouter = require('../routes/reviewRoutes')
+const tc = require("../controllers/tourController");
+const authController = require("../controllers/authController");
+const reviewRouter = require("../routes/reviewRoutes");
 const router = ex.Router();
 
-router.use('/:tourId/reviews', reviewRouter);
+router.use("/:tourId/reviews", reviewRouter);
 
-
-
-router.route('/top-5-cheap').get(tc.aliasTopTours, tc.getAllTours);
-router.route('/stats').get(tc.getTourStats);
-router.route('/monthly-plan/:year').get(tc.getMonthlyPlan);
+router.route("/top-5-cheap").get(tc.aliasTopTours, tc.getAllTours);
+router.route("/stats").get(tc.getTourStats);
+router.route("/monthly-plan/:year").get(
+  authController.protect,
+  authController.restrictTo("admin", "lead-guide", "guide"),
+  tc.getMonthlyPlan);
 
 router
   .route("/")
-  .get(authController.protect, tc.getAllTours)
-  .post(tc.postTour);
+  .get(tc.getAllTours)
+  .post(
+    authController.protect,
+    authController.restrictTo("admin", "lead-guide"),
+    tc.postTour
+  );
 
 router
   .route("/:id")
   .get(tc.getTourById)
-  .patch(tc.patchTour)
-  .delete(authController.protect, 
-    authController.restrictTo('admin', 'lead-guide'), 
-    tc.deleteTour);
+  .patch(
+    authController.protect,
+    authController.restrictTo("admin", "lead-guide"),
+    tc.patchTour)
+  .delete(
+    authController.protect,
+    authController.restrictTo("admin", "lead-guide"),
+    tc.deleteTour
+  );
 
-  module.exports = router
+module.exports = router;
