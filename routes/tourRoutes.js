@@ -8,10 +8,13 @@ router.use("/:tourId/reviews", reviewRouter);
 
 router.route("/top-5-cheap").get(tc.aliasTopTours, tc.getAllTours);
 router.route("/stats").get(tc.getTourStats);
-router.route("/monthly-plan/:year").get(
-  authController.protect,
-  authController.restrictTo("admin", "lead-guide", "guide"),
-  tc.getMonthlyPlan);
+router
+  .route("/monthly-plan/:year")
+  .get(
+    authController.protect,
+    authController.restrictTo("admin", "lead-guide", "guide"),
+    tc.getMonthlyPlan
+  );
 
 router
   .route("/")
@@ -28,7 +31,10 @@ router
   .patch(
     authController.protect,
     authController.restrictTo("admin", "lead-guide"),
-    tc.patchTour)
+    tc.uploadTourImages,
+    tc.resizeTourImages,
+    tc.patchTour
+  )
   .delete(
     authController.protect,
     authController.restrictTo("admin", "lead-guide"),

@@ -65,7 +65,7 @@ const tourSchema = new mongoose.Schema(
     },
     imageCover: {
       type: String,
-      required: [true, "Enter a image"],
+      required: [true, "Upload a image"],
     },
     images: [String],
     createdAt: {

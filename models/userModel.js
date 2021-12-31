@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema({
   },
   photo: {
     type: "string",
+    default: "default.jpg",
   },
   role: {
     type: "string",
@@ -49,7 +50,7 @@ const userSchema = new mongoose.Schema({
     default: true,
     select: false,
   },
-  notActiveFrom: Date
+  notActiveFrom: Date,
 });
 
 userSchema.pre("save", async function (next) {
@@ -69,7 +70,7 @@ userSchema.pre("save", function (next) {
 });
 
 userSchema.pre(/^find/, function (next) {
-  this.find({ active: {$ne: false} });
+  this.find({ active: { $ne: false } });
   next();
 });
 
