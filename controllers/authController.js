@@ -126,19 +126,13 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   const resetToken = user.createPasswordResetToken();
   await user.save({ validateBeforeSave: false });
 
-  //send it to user email
-  const resetUrl = `${req.protocol}://${req.get(
-    "host"
-  )}/api/v1/users/resetPassword/${resetToken}`;
-
-  const message = `Forgot your password? Submit a patch request to ${resetUrl}. If you do not want to reset your password, just ignore this message`;
-
+  //send it to user email 
   try {
-    // await sendEmail({
-    //   email: user.email,
-    //   subject: "Password reset Tours.io",
-    //   message,
-    // });
+    const resetUrl = `${req.protocol}://${req.get(
+      "host"
+    )}/api/v1/users/resetPassword/${resetToken}`;
+  
+    await new Email(user, resetUrl).sendPasswordReset();
 
     res.status(200).json({
       status: "success",
